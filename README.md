@@ -12,4 +12,4 @@ In the Spaces model of interaction there are three basic operations
 And equally as important is that each interaction is performed under a time constraint. Addtionally in Flight these 
 operations are asychronous, hence return Future of the resulting type.
 
-To bring this to life here is some code from the Scala REPL
+To bring this to life here is some code ...
