@@ -20,22 +20,29 @@
 
 package com.zink.fly.examples
 
-import com.zink.fly.{ Flight => flt }
+import com.zink.fly.Flight._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent._
 import scala.concurrent.duration._
 
-case class Price(symbol : Option[String],  value : Option[Int]) 
+case class Needle(val i : BigInt)
 
-object Prices extends App {
+object NeedleInHaystack extends App {
   
-  val bid = Price(Some("IBM"),Some(123))
+  // start looking, before the needle is placed
+  read(Needle(2345), 100 seconds) onSuccess { case e => println(s"Found $e") }
   
-  flt.read(bid, 100 seconds) onSuccess { case e => println(s"Found $e") }
-    
-  val writes = for (v <- 120 to 123) flt.write(Price(Some("IBM"),Some(v)) , 1 second)
+  // write a few Needles 
+  for (i <- (1 to 100000).par) write(Needle(i), 10 seconds) 
   
-  Thread.sleep( (10 millis).toMillis )
+  // take the needle out 
+  take(Needle(2345), 10 millis) onSuccess { case e => println("Taken it!") }
+  
+  // look again and its gone
+  read(Needle(2345), 10 millis) onFailure { case tbl => println("Daw missed it!") }
+  
+  // let the asyncs run 
+  Thread.sleep( (1 second).toMillis )
   sys.exit()
 }
