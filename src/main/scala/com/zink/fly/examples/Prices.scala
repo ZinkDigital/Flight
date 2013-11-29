@@ -20,29 +20,50 @@
 
 package com.zink.fly.examples
 
-import com.zink.fly.Flight._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent._
 import scala.concurrent.duration._
+import com.zink.fly.{ Flight => flt }
+import scala.util.{ Success, Failure }
 
-case class Needle(val i : BigInt)
 
-object NeedleInHaystack extends App {
+case class Price(symbol : Option[String],  value : Option[Int]) 
+
+object Prices extends App {
   
-  // start looking, before the needle is placed
-  read(Needle(2345), 100 seconds) onSuccess { case e => println(s"Found $e") }
+  val offer = Price(Some("ARM"),Some(123))
+
+  flt.write(offer, 100 seconds) onSuccess { 
+	case lease => println(s"Offer written for $lease") 
+  }
   
-  // write a few Needles 
-  for (i <- (1 to 100000).par) write(Needle(i), 10 seconds) 
+  val tmpl = Price(Some("ARM"), None)
+
+  flt.read(tmpl, 10 seconds) onComplete {
+     case Success(entry) => println("Read matched " + entry)
+     case Failure(t) => println("Sorry: " + t.getMessage)
+  }
+
+  flt.take(tmpl, 10 seconds) onSuccess { 
+	 case ent => println(s"Take matched $ent") 
+  }
+
+  val tmplArm = Price(Some("ARM"),Some(123))
+  val tmplWlf = Price(Some("WLF"),Some(321))
+  val lse = 10 seconds
   
-  // take the needle out 
-  take(Needle(2345), 10 millis) onSuccess { case e => println("Taken it!") }
+  flt.write(tmplArm, lse)   // comment out to prevent deals
+  flt.write(tmplWlf, lse)
+
+  val futArm = flt.read(tmplArm, lse) 
+  val futWlf = flt.read(tmplWlf, lse)
+
+  (futArm zip futWlf) onComplete {
+     case Success(e) => println("Deal")
+     case Failure(t) => println("No Deal")
+  }
   
-  // look again and its gone
-  read(Needle(2345), 10 millis) onFailure { case tbl => println("Daw missed it!") }
-  
-  // let the asyncs run 
-  Thread.sleep( (1 second).toMillis )
+  Thread.sleep( (11 seconds).toMillis )
   sys.exit()
 }

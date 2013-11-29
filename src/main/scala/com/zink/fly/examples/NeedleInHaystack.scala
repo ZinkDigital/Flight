@@ -26,16 +26,27 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent._
 import scala.concurrent.duration._
 
-case class Price(symbol : Option[String],  value : Option[Int]) 
 
-object Prices extends App {
+
+case class Needle(val i : BigInt)
+
+object NeedleInHaystack extends App {
   
-  val bid = Price(Some("IBM"),Some(123))
+  // start looking, before the needle is placed
+  flt.read(Needle(2345), 100 seconds) onSuccess { case e => println(s"Found $e") }
   
-  flt.read(bid, 100 seconds) onSuccess { case e => println(s"Found $e") }
-    
-  val writes = for (v <- 120 to 123) flt.write(Price(Some("IBM"),Some(v)) , 1 second)
+  // write a few Needles in parallel 
+  for (i <- (1 to 100000).par) flt.write(Needle(i), 10 seconds) 
   
-  Thread.sleep( (10 millis).toMillis )
+  // take the needle out 
+  flt.take(Needle(2345), 10 millis) onSuccess { case e => println("Taken it!") }
+  // wait for trigger
+  Thread.sleep( (100 millis).toMillis )
+   
+  // look again and its gone
+  flt.read(Needle(2345), 10 millis) onFailure { case tbl => println("Daw missed it!") }
+  
+  // let the asyncs run 
+  Thread.sleep( (100 millis).toMillis )
   sys.exit()
 }

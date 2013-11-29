@@ -49,13 +49,13 @@ final class TimeTrigger(val tick : FiniteDuration)  {
   val loop = new Runnable {
      override def run() : Unit = {
          while (!Thread.interrupted) {
-        	val now = System.nanoTime
-            while (pbq.size != 0 && pbq.peek.expiry < now) {
+        	val tStamp = System.nanoTime
+            while (pbq.size != 0 && pbq.peek.expiry < tStamp) {
                try {  pbq.take.block.apply }
                catch {  case e: Exception => }      
             }
             // time may have gone by so park till the next tick
-            val elapsed = System.nanoTime - now // then
+            val elapsed = System.nanoTime - tStamp 
             LockSupport.parkNanos(Math.max(1, tick.toNanos-elapsed))
          }  
      } 

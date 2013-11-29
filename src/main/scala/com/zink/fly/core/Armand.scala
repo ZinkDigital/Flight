@@ -65,12 +65,17 @@ class Armand[T]( val matcher : (T,T) => Boolean ) {
 	  val templ = PendingPromise(entry) 
       
       // try to find all the pending reads and dispatch them
+	  // takeAll could be optimised to make a single pass.
       val reads = pendingReads.takeAll( templ, pendingMatcher )
+      // TODO : these promises may expire due to the lease timeout
+      // whilst we are here need to check for failure to complete
       reads.foreach( pr => pr.get.promise.success(entry))
          
       // try to find a pending take
       val take = pendingTakes.takeImmediate( templ, pendingMatcher)
       take match {
+	    // TODO : this promises may expire due to the lease timeout
+        // whilst we are here need to check for failure to complete
 	    case Some(t) => t.promise.success(entry)
 	    // check resources here and reduce lease if required
 	    case None => storedEntries.writeImmediate(entry, lease)
