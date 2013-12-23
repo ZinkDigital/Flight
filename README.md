@@ -21,6 +21,8 @@ SBT needs:
 libraryDependencies += "com.flyobjectspace" %% "flight" % "0.0.1-SNAPSHOT"
 ```
 
+and the code:
+
 ```scala
 import com.zink.fly.{ Flight => flt }
 
