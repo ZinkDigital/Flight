@@ -15,6 +15,12 @@ operations are asychronous, hence return Future of the resulting type.
 To bring this to life here is some code, starting with the imports. You can find this code in the examples package of
 the project and run it from sbt by typing '>sbt run' and selecting the 'Prices' app. 
 
+SBT needs:
+
+```scala
+libraryDependencies += "com.flyobjectspace" %% "flight" % "0.0.1-SNAPSHOT"
+```
+
 ```scala
 import com.zink.fly.{ Flight => flt }
 
