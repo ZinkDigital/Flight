@@ -9,19 +9,17 @@ In the Spaces model of interaction there are three basic operations
 * Read a copy of an Object from the Space
 * Take (remove) an Object from the Space 
 
-And equally as important is that each interaction is performed under a time constraint. Addtionally in Flight these 
-operations are asychronous, hence return Future of the resulting type.
+And equally as important is that each interaction is performed under a time constraint called a 'lease'. Addtionally in Flight these operations are asychronous, hence return Future of the resulting type.
 
-To bring this to life here is some code, starting with the imports. You can find this code in the examples package of
-the project and run it from sbt by typing '>sbt run' and selecting the 'Prices' app. 
-
-SBT needs:
+If you are using Flight in your project you can download the binaries from sonatype, for example in an SBT powered project you need to include this line :
 
 ```scala
 libraryDependencies += "com.flyobjectspace" %% "flight" % "0.0.1-SNAPSHOT"
 ```
 
-and the code:
+To bring this to life here is some code, starting with the imports. You can find this code in the examples package of
+the project and run it from sbt by typing '>sbt run' and selecting the 'Prices' app. 
+
 
 ```scala
 import com.zink.fly.{ Flight => flt }
