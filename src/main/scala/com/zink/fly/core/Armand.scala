@@ -54,8 +54,8 @@ class Armand[T]( val matcher : (T,T) => Boolean ) {
        matcher(pp2.template, pp1.template)	 
   }
   
-  val trigger = new TimeTrigger(100 nanos)
-  
+  val timeResolution = 500 nanos // giving microsecond accuracy
+  val trigger = new TimeTrigger(timeResolution)
   
   /**
    * Write the entry checking if any read or takes are pending
