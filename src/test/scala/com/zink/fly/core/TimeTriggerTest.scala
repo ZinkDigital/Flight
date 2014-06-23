@@ -37,7 +37,7 @@ class TimeTriggerTestSuite extends FunSuite with BeforeAndAfter {
 	   tt.schedule(lease) { toggle = true }
 	   
 	   assert(toggle === false)
-	   Thread.sleep(0, 300)
+	   Thread.sleep(1, 300)
 	   assert(toggle === true)  
   }
       
@@ -56,13 +56,13 @@ class TimeTriggerTestSuite extends FunSuite with BeforeAndAfter {
 	  // schedule backwards on the queue
 	  tt.schedule( l3 ) { t3 = true }
 	  tt.schedule( l2 ) { t2 = true }
-      tt.schedule( l1 ) { t1 = true }
+    tt.schedule( l1 ) { t1 = true }
 	  
-      val itr = tt.pbq.iterator
-      // (1 to 3).foreach( x => println( itr.next.expiry ) )
+    // val itr = tt.pbq.iterator
+    // (1 to 3).foreach( x => println( itr.next.expiry ) )
       
 	  // check nothing fired 
-      if (t1) assert(t1 === false)
+    if (t1) assert(t1 === false)
 	  if (t2) assert(t2 === false)
 	  if (t3) assert(t3 === false)
  
@@ -86,8 +86,10 @@ class TimeTriggerTestSuite extends FunSuite with BeforeAndAfter {
   
    test("Flood Promises Same Lease") {
      
-     val pCount = 100000
-     val tick = 10 nanos
+     val pCount = 10000
+
+
+     val tick = 100 nanos
      val lease = 100 millis
      val tt = new TimeTrigger( tick )
      val ps = ( 1 to pCount ).map( x => promise[Int] )
@@ -103,10 +105,3 @@ class TimeTriggerTestSuite extends FunSuite with BeforeAndAfter {
         
 }
 
- 
-
-
-
-class TimeTriggerTest {
-
-}
