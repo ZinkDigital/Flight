@@ -34,7 +34,7 @@ class RepFactorySuite extends FunSuite with BeforeAndAfter with Matchers {
   test("EntryRep From Type") {
  
 	   val entry = Car("Red", BigInt(20000) )
-	   val rep = EntryRep("com.zink.fly.core.Car", List( "Red", BigInt(20000) ) )
+	   val rep = EntryRep("RepFactorySuite.this.Car", List( "Red", BigInt(20000) ) )
 	   val res = RepFactory.makeRep(entry)
 	   
 	    res should be (rep)
@@ -44,7 +44,7 @@ class RepFactorySuite extends FunSuite with BeforeAndAfter with Matchers {
  
 	   val nullEntry = Car( null, null)
 	     
-	   val rep = EntryRep("com.zink.fly.core.Car", List( null, null ) )  
+	   val rep = EntryRep("RepFactorySuite.this.Car", List( null, null ) )
 	   val res = RepFactory.makeRep(nullEntry)
 	   
 	   res should be (rep)
@@ -53,32 +53,32 @@ class RepFactorySuite extends FunSuite with BeforeAndAfter with Matchers {
    test("EntryRep From Options") {
  
 	   val entry = CarOpt( Some("Red"), Some(20000) )
-	   val rep = EntryRep("com.zink.fly.core.CarOpt", List(Some("Red"), Some(20000) ) )
+	   val rep = EntryRep("RepFactorySuite.this.CarOpt", List(Some("Red"), Some(20000) ) )
 	   val res = RepFactory.makeRep(entry)
 	   
 	   res should be (rep)
    }
    
    test("T From Rep Values") {	   
-	   val rep = EntryRep("com.zink.fly.core.Car", List( "Red", BigInt(20000) ) )  
+	   val rep = EntryRep("RepFactorySuite.this.CarOpt", List( "Red", BigInt(20000) ) )
 	   val res = RepFactory.makeT[Car](rep)
 	   res should be ( Car("Red", BigInt(20000) ) )
    }  
    
    test("T From Rep Nulls") {
-       val rep = EntryRep("com.zink.fly.core.Car", List( null, null ) )  
+       val rep = EntryRep("RepFactorySuite.this.Car", List( null, null ) )
 	   val res = RepFactory.makeT[Car](rep)
 	   res should be ( Car( null, null) )
    }
    
    test("T From Options") {
-       val rep = EntryRep("com.zink.fly.core.CarOpt", List( Some("Red"), Some(20000) ) )  
+       val rep = EntryRep("RepFactorySuite.this.CarOpt", List( Some("Red"), Some(20000) ) )
 	   val res = RepFactory.makeT[CarOpt](rep)
 	   res should be (CarOpt( Some("Red"), Some(20000) ) )
    }
    
     test("Perf makeRep") {
-      val rep = EntryRep("com.zink.fly.core.Car", List( "Red", BigInt(20000) ) )
+      val rep = EntryRep("RepFactorySuite.this.Car", List( "Red", BigInt(20000) ) )
       val entry = RepFactory.makeT[Car](rep)
       for (i <- 1 to 1000) {
         RepFactory.makeRep(entry)
@@ -86,7 +86,7 @@ class RepFactorySuite extends FunSuite with BeforeAndAfter with Matchers {
     }
     
     test("Perf makeT") {
-      val rep = EntryRep("com.zink.fly.core.Car", List( "Red", BigInt(20000) ) )
+      val rep = EntryRep("RepFactorySuite.this.CarOpt", List( "Red", BigInt(20000) ) )
       for (i <- 1 to 1000) {
         RepFactory.makeT[Car](rep)
       }   

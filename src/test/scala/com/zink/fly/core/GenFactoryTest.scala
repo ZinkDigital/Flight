@@ -25,7 +25,7 @@ import org.scalatest.BeforeAndAfter
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 
-
+import shapeless._
 import org.scalatest._
 
 
@@ -48,7 +48,7 @@ class GenFactorySuite extends FunSuite with BeforeAndAfter with Matchers {
 	   val res = GenFactory.makeGeneric(entry)
 
      println
-	    res should be (rep)
+	    res should be ("Red" :: 20000 :: HNil )
    }
   
 //   test("EntryRep From Nulled") {
