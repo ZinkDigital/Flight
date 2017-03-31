@@ -20,15 +20,16 @@
 
 package com.zink.fly.core
 
-import scala.reflect.runtime.{ universe => runUniv }
+import scala.reflect.runtime.{universe => runUniv}
 import scala.reflect.runtime.universe._
 import scala.concurrent.Future
 import scala.concurrent.Promise
-import scala.concurrent.{ future, promise }
+import scala.concurrent.{future, promise}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
-
 import java.util.concurrent.LinkedBlockingQueue
+
+import scala.collection.concurrent.TrieMap
 
 
 object RequestRouter {
@@ -60,9 +61,8 @@ object RequestRouter {
 						
   import scala.collection.mutable.{ HashMap, SynchronizedMap }
   
-  val rtr = new HashMap[String, TypeChannel] 
-		  			with SynchronizedMap[String, TypeChannel]   
-  
+  val rtr = new TrieMap[String, TypeChannel]
+
   def route( rq : Request ) : Unit = {
     val channel = rtr.getOrElseUpdate(rq.key, new TypeChannel) 
     channel.q.put(rq)
