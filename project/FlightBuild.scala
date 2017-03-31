@@ -8,15 +8,20 @@ object BuildSettings {
 
   val buildSettings: Seq[Setting[_]] = Defaults.defaultSettings ++ Seq[Setting[_]](
     organization := "com.flyobjectspace",
-    version := "0.0.1-SNAPSHOT",
-    scalaVersion := "2.10.3",
-    scalaBinaryVersion := "2.10")
+    version := "0.0.2-SNAPSHOT",
+    scalaVersion := "2.12.1",
+    scalaBinaryVersion := "2.12")
 }
 
 object Dependencies {
-  val specs2 = Seq(
-    "org.scala-lang" % "scala-reflect" % "2.10.3",
-    "org.scalatest" %% "scalatest" % "1.9.2" % "test")
+  val magic = Seq(
+    "com.chuusai" %% "shapeless" % "2.3.2",
+    "org.scala-lang" % "scala-reflect" % "2.12.1",
+    "org.scalactic" %% "scalactic" % "3.0.1",
+    "org.scalatest" %% "scalatest" % "3.0.1" % "test")
+
+
+  val libs = magic
 }
 
 /* see http://www.cakesolutions.net/teamblogs/2012/01/28/publishing-sbt-projects-to-nexus/
@@ -107,5 +112,5 @@ object FlightBuild extends Build {
   lazy val flight = Project(
     "Flight",
     file("."),
-    settings = buildSettings ++ publishSettings ++ Seq(resolvers := Seq(Classpaths.typesafeResolver), libraryDependencies ++= specs2))
+    settings = buildSettings ++ publishSettings ++ Seq(resolvers := Seq(Classpaths.typesafeResolver), libraryDependencies ++= libs ))
 }
