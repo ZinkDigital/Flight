@@ -20,22 +20,18 @@
 
 package com.zink.fly.core
 
-import org.scalatest.FunSuite
-import org.scalatest.BeforeAndAfter
+import org.scalatest._
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 
-import org.scalatest.matchers.ShouldMatchers
+
+class RepFactorySuite extends FunSuite with BeforeAndAfter with Matchers {
+
+  case class Car( val colour : String, val mileage : BigInt )
+  case class CarOpt( val colour : Option[String], val mileage : Option[Int] )
 
 
-case class Car( val colour : String, val mileage : BigInt )  
-case class CarOpt( val colour : Option[String], val mileage : Option[Int] ) 
-
-
-class RepFactorySuite extends FunSuite with BeforeAndAfter with ShouldMatchers {
- 
-   
-   test("EntryRep From Type") {
+  test("EntryRep From Type") {
  
 	   val entry = Car("Red", BigInt(20000) )
 	   val rep = EntryRep("com.zink.fly.core.Car", List( "Red", BigInt(20000) ) )

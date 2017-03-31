@@ -20,8 +20,8 @@
 
 package com.zink.fly.core
 
-import org.scalatest.FunSuite
-import org.scalatest.BeforeAndAfter
+import org.scalatest._
+
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 

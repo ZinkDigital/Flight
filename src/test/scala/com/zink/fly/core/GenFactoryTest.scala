@@ -25,17 +25,23 @@ import org.scalatest.BeforeAndAfter
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 
+
 import org.scalatest._
-import Matchers._
+
 
 
 //case class Car( val colour : String, val mileage : BigInt )
 //case class CarOpt( val colour : Option[String], val mileage : Option[Int] )
 
 
-class GenFactorySuite extends FunSuite with BeforeAndAfter with ShouldMatchers {
+class GenFactorySuite extends FunSuite with BeforeAndAfter with Matchers {
 
-   test("Generic Record From Type") {
+
+  case class Car( val colour : String, val mileage : BigInt )
+  case class CarOpt( val colour : Option[String], val mileage : Option[Int] )
+
+
+  test("Generic Record From Type") {
  
 	   val entry = Car("Red", BigInt(20000) )
 	   val rep = EntryRep("com.zink.fly.core.Car", List( "Red", BigInt(20000) ) )

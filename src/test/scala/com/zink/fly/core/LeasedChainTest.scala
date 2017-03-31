@@ -22,12 +22,12 @@ package com.zink.fly.core
 
 import org.scalatest.FunSuite
 import org.scalatest.BeforeAndAfter
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest._
 
 import scala.concurrent.duration._
 
 
-class LeasedChainTestSuite extends FunSuite with BeforeAndAfter with ShouldMatchers {
+class LeasedChainTestSuite extends FunSuite with BeforeAndAfter with Matchers {
 
    test("Single Promise") {
  
